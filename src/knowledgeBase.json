@@ -1,0 +1,14 @@
+{
+  "1": {
+    "caseID": "1",
+    "title": "test article",
+    "url": "www.test.TBG.com",
+    "content" : "Articles are important for understanding information without having to contact a member of staff. This is a tet article."
+  },
+  "2": {
+    "caseID": "2",
+    "title": "second test article",
+    "url": "www.test2.TBG.com",
+    "content" : "This is also a tet article."
+  }
+}
