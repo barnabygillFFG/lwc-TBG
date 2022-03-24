@@ -7,11 +7,17 @@ import { LightningElement, track, wire, api } from 'lwc';
 
 //import * as data from './knowledgeBase.json';
 
+const columns = [
+    { label: 'caseID', fieldName: 'caseID' },
+    { label: 'Title', fieldName: 'title' },
+    { label: 'Content', fieldName: 'content' },
+    { label: 'url', fieldName: 'url', type: 'url' },
+];
 
 export default class KnowledgeSearch extends LightningElement {
     @track search;  
     //@track results;
-    columns;
+    columns = columns;
     @track data = [];
     @api recordId;
     caseId;
@@ -66,17 +72,11 @@ export default class KnowledgeSearch extends LightningElement {
         this.search = event.target.value;
         console.log(this.search);
         this.data = this.getRelevantArticles();
-        //fetch('./knowledgeBase.json')
-        //.then(response => {
-        //    return response.json();
-        //})
-        //this.articles = JSON.parse(this.jsonRead); //this.findArticles();
-        //console.log(this.articles);
     }
 
     getRelevantArticles() {
         this.articles = JSON.parse(this.jsonRead); //this.findArticles();
-        this.columns = Object.keys(this.articles[0]);
+        //this.columns = Object.keys(this.articles[0]);
         //console.log(Object.keys(this.articles[0]));
         var data_filter = this.articles.filter( element => element.title.includes(this.search))
         console.log(data_filter)

@@ -1,6 +1,6 @@
 <template>
     <div class="slds-page-header">
-        <span class="title">Knowledge Assignment</span>
+        <span class="title">Knowledge Assignment</span><br>
         <div id="container">
             <lightning-layout>
                 <lightning-layout-item padding="around-small" size="12" >
@@ -23,7 +23,7 @@
                                 <div  class="slds-m-around_medium" style="overflow: hidden;height:100%;padding-bottom:40px;">       
                                     <div  class="slds-m-around_medium" style="overflow: hidden;height:80%;">
                                         <lightning-datatable
-                                            key-field="id"
+                                            key-field="caseID"
                                             data={data}
                                             columns={columns}>
                                             <!--onrowselection={handleRowSelection}-->
