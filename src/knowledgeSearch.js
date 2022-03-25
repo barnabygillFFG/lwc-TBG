@@ -1,4 +1,5 @@
 import { LightningElement, track, wire, api } from 'lwc';
+//import { testKnowledgeBase } from './knoweledgeBaseJSON.js';
 //import { require } from ''; 
 //import { NavigationMixin } from 'lightning/navigation';
 //import KnowledgeArticles from '@salesforce/apex/knowledgeSearchController.getKnowledgeArticles';
@@ -20,8 +21,12 @@ export default class KnowledgeSearch extends LightningElement {
     columns = columns;
     @track data = [];
     @api recordId;
+    @track page;
     caseId;
     articles;
+    /**/
+    //@track knowledeArticles = testKnowledgeBase();
+    /*
     jsonRead = `[
                     {
                         "caseID": "1",
@@ -33,34 +38,78 @@ export default class KnowledgeSearch extends LightningElement {
                         "caseID": "2",
                         "title": "second test article",
                         "url": "www.test2.TBG.com",
-                        "content" : "This is also a text article."
+                        "content" : "This is also a test article."
                     },
                     {
                         "caseID": "3",
                         "title": "abcd",
                         "url": "www.3.TBG.com",
-                        "content" : "This is also a text article - number 3."
-                    }
-                    ,
+                        "content" : "This is also a test article - number 3."
+                    },
                     {
                         "caseID": "4",
                         "title": "fourth",
                         "url": "www.number4.TBG.com",
-                        "content" : "444 - This is also a text article."
+                        "content" : "444 - This is also a test article."
+                    },
+                    {
+                        "caseID": "5",
+                        "title": "numero five",
+                        "url": "www.555.TBG.com",
+                        "content" : "Fifth article here."
                     }
                 ]`;
+    */
 
     //knowledge = require('./knowledgeBase.json');
     //console.log(knowledge);
 
-    //findArticles() {
-    //    fetch('./knowledgeBase.json')
-    //    .then(response => {
-    //        return response.json();
-    //    })
-        //.then(data => console.log(data));
-        //return response.json();
-    //}
+    /*findArticles() {
+        fetch('./knowledgeBase.json')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => console.log(data));
+        return response.json();
+    }
+
+    readFile(file) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, true);
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4 && rawFile.status == "200") {
+                windown.alert(rawFile.responseText)
+                return rawFile.responseText;
+            }
+        }
+        //return null;
+    }*/
+
+    readTextFile(file, callback) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, true);
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4 && rawFile.status == "200") {
+                callback(rawFile.responseText);
+            }
+        }
+        rawFile.send(null);
+    }
+
+    /*download_KB(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }*/
 
 
     connectedCallback() {
@@ -74,13 +123,38 @@ export default class KnowledgeSearch extends LightningElement {
         this.data = this.getRelevantArticles();
     }
 
+    
+
     getRelevantArticles() {
-        this.articles = JSON.parse(this.jsonRead); //this.findArticles();
-        //this.columns = Object.keys(this.articles[0]);
-        //console.log(Object.keys(this.articles[0]));
-        var data_filter = this.articles.filter( element => element.title.includes(this.search))
-        console.log(data_filter)
-        return data_filter
+        
+        //this.readFile('./knowledgeBase.json', function(text) {
+        //    this.articles = JSON.parse(text); //parse JSON
+        //    console.log(this.articles);
+        //});
+
+        //var data = this.readFile('./knowledgeBase.json')
+        //console.log(data);
+        //this.articles = JSON.parse(data); //parse JSON
+
+        //this.articles = JSON.parse(this.jsonRead); //this.findArticles();
+        //console.log(this.articles);
+
+        //var data = this.knowledeArticles;
+        //console.log(this.knowledeArticles);
+
+        this.readTextFile("./knowledgeBase.json", function(text){
+            //var data =
+            this.articles = JSON.parse(text);
+            console.log(data);
+        });
+        
+        if (this.articles) {
+            //this.columns = Object.keys(this.articles[0]);
+            //console.log(Object.keys(this.articles[0]));
+            var data_filter = this.articles.filter( element => element.title.includes(this.search))
+            console.log(data_filter)
+            return data_filter
+        }
     }
 
 }

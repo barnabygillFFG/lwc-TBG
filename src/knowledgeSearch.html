@@ -5,7 +5,7 @@
             <lightning-layout>
                 <lightning-layout-item padding="around-small" size="12" >
                 <div>
-                    <lightning-input label="Search" onchange={changeHandler}></lightning-input>
+                    <lightning-input label="Search" value="" onchange={changeHandler}></lightning-input>
                 </div>
                 </lightning-layout-item>
             </lightning-layout>
@@ -32,7 +32,20 @@
                                </div>
                             </lightning-layout-item>
                         </lightning-layout>
-                     </template>
+                    </template>
+                    <template if:true={page} >
+                        <div class="slds-page-header">
+                            <div id="page">
+                            <lightning-layout>
+                                Title: <br>
+                                {title}
+                                URL: {url}
+                                Body: <br>
+                                {body}
+                            </lightning-layout>
+                            </div>
+                        </div>
+                        </template>
                     <template if:false={articles}><i>No articles found.</i></template>
                 </div>
                 </lightning-layout-item>
