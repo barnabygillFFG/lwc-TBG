@@ -1,14 +1,29 @@
 {
-  "1": {
-    "caseID": "1",
-    "title": "test article",
-    "url": "www.test.TBG.com",
-    "content" : "Articles are important for understanding information without having to contact a member of staff. This is a tet article."
-  },
-  "2": {
-    "caseID": "2",
-    "title": "second test article",
-    "url": "www.test2.TBG.com",
-    "content" : "This is also a tet article."
-  }
+  "articles": [
+    {
+        "caseID": "1",
+        "title": "first test article",
+        "url": "www.test.TBG.com",
+        "content" : "Articles are important for understanding information without having to contact a member of staff. This is a tet article."
+    },
+    {
+        "caseID": "2",
+        "title": "second test article",
+        "url": "www.test2.TBG.com",
+        "content" : "This is also a text article."
+    },
+    {
+        "caseID": "3",
+        "title": "abcd",
+        "url": "www.3.TBG.com",
+        "content" : "This is also a text article - number 3."
+    }
+    ,
+    {
+        "caseID": "4",
+        "title": "fourth",
+        "url": "www.number4.TBG.com",
+        "content" : "444 - This is also a text article."
+    }
+  ]
 }
