@@ -97,6 +97,39 @@ export default class KnowledgeSearch extends LightningElement {
         }
         rawFile.send(null);
     }
+    
+
+    readTextFile3(file) {
+        var rawFile = new XMLHttpRequest();
+        var allText; // var declared in readTextFile scope
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, true);
+        rawFile.onreadystatechange = function() {
+            if (rawFile.readyState === 4 && rawFile.status == "200") {
+                allText = rawFile.responseText;
+            }
+        }
+        rawFile.send(null);
+        console.log(allText)
+        return allText;
+    }
+
+    readTextFile2(file) {
+        var rawFile = new XMLHttpRequest();
+        var allText; // var declared in readTextFile scope
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if(rawFile.readyState === 4) {
+                if(rawFile.status === 200 || rawFile.status == 0) {
+                    allText = rawFile.responseText;
+                }
+            }
+        }
+        rawFile.send(null);
+        console.log(allText)
+        return allText; // here you can return the data filled in above
+    }
 
     /*download_KB(filename, text) {
         var element = document.createElement('a');
@@ -120,17 +153,81 @@ export default class KnowledgeSearch extends LightningElement {
     changeHandler(event) {
         this.search = event.target.value;
         console.log(this.search);
+
         this.data = this.getRelevantArticles();
+
+        /*var filename = "./knowledgeBase.json"
+        this.articles = (function(filename) {
+            var search_data;
+            var rawFile = new XMLHttpRequest();
+            rawFile.overrideMimeType("application/json");
+            rawFile.open("GET", filename, true);
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4 && rawFile.status == "200") {
+                    search_data = JSON.parse(rawFile.responseText);
+                }
+            }
+            rawFile.send(null);
+            //var search_data = JSON.parse(text);
+            console.log(search_data);
+            return search_data;
+            //this.articles = JSON.parse(text);
+            //console.log(this.articles);
+        });
+        this.articles = (this.readTextFile("./knowledgeBase.json", function(text) {
+            //console.log(text);
+            var search_data = JSON.parse(text);
+            console.log(search_data);
+            return search_data;
+            //this.articles = JSON.parse(text);
+            //console.log(this.articles);
+        }));
+        this.readTextFile("./knowledgeBase.json", function(text) {
+            //console.log(text);
+            var search_data = JSON.parse(text);
+            console.log(search_data);
+            this.articles = search_data;
+            //this.articles = JSON.parse(text);
+            //console.log(this.articles);
+        });*/
+
+
+
+        //this.articles = this.readTextFile3(filename)
+
+        //console.log("articles: ", this.articles);
     }
 
-    
+    getArticles() {
+        
+        var search_data;
+        this.readTextFile("./knowledgeBase.json", function(text) {
+            //console.log(text);
+            search_data = JSON.parse(text);
+            
+            //this.articles = search_data;
+            //this.articles = JSON.parse(text);
+            //console.log(this.articles);
+        });
+        console.log(search_data);
+        return search_data;
+    }
 
+
+    //async 
     getRelevantArticles() {
         
-        //this.readFile('./knowledgeBase.json', function(text) {
-        //    this.articles = JSON.parse(text); //parse JSON
-        //    console.log(this.articles);
-        //});
+        this.articles = this.readTextFile('./knowledgeBase.json', function(text) {
+            //this.articles = JSON.parse(text); //this.articles not in scope here
+            var search_data = JSON.parse(text);
+            console.log(search_data);
+            return search_data
+            //console.log(this.articles);
+        });
+        // search_data not in scope here
+
+        //this.articles = 
+        console.log(this.articles);
 
         //var data = this.readFile('./knowledgeBase.json')
         //console.log(data);
@@ -142,16 +239,24 @@ export default class KnowledgeSearch extends LightningElement {
         //var data = this.knowledeArticles;
         //console.log(this.knowledeArticles);
 
-        this.readTextFile("./knowledgeBase.json", function(text){
-            //var data =
-            this.articles = JSON.parse(text);
-            console.log(data);
-        });
+        
+
+        //console.log(this.articles);
+
+        /*filter(data) {
+            this.articles = data;
+            if (data) {
+                var data_filter = this.articles.filter(element => element.title.includes(this.search))
+                console.log(data_filter)
+                //return data_filter
+            }
+        }*/
+        
         
         if (this.articles) {
             //this.columns = Object.keys(this.articles[0]);
             //console.log(Object.keys(this.articles[0]));
-            var data_filter = this.articles.filter( element => element.title.includes(this.search))
+            var data_filter = this.articles.filter(element => element.title.includes(this.search))
             console.log(data_filter)
             return data_filter
         }
