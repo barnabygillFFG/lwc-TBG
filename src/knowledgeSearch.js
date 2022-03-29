@@ -217,19 +217,14 @@ export default class KnowledgeSearch extends LightningElement {
     //async 
     getRelevantArticles() {
         
-        //this.articles = this.readTextFile('./knowledgeBase.json', function(text) {
-        //    //this.articles = JSON.parse(text); //parse JSON
-        //    var search_data = JSON.parse(text);
-        //    console.log(search_data);
-        //    return search_data
-        //    //console.log(this.articles);
-        //});
-
-        this.readTextFile("./knowledgeBase.json", function(text){
-            //var data =
-            this.articles = JSON.parse(text);
-            console.log(data);
+        this.articles = this.readTextFile('./knowledgeBase.json', function(text) {
+            //this.articles = JSON.parse(text); //this.articles not in scope here
+            var search_data = JSON.parse(text);
+            console.log(search_data);
+            return search_data
+            //console.log(this.articles);
         });
+        // search_data not in scope here
 
         //this.articles = 
         console.log(this.articles);
