@@ -11,7 +11,7 @@ import { LightningElement, track, wire, api } from 'lwc';
 const columns = [
     { label: 'caseID', fieldName: 'caseID' },
     { label: 'Title', fieldName: 'title' },
-    { label: 'Content', fieldName: 'content' },
+    { label: 'Content', fieldName: 'content'},
     { label: 'url', fieldName: 'url', type: 'url' },
 ];
 
@@ -24,10 +24,15 @@ export default class KnowledgeSearch extends LightningElement {
     @track page;
     caseId;
     articles;
+    @track recordSelected=false;
+    @api selectedRow;
+    @track page = {}
     /**/
     //@track knowledeArticles = testKnowledgeBase();
+    /**/
+    jsonRead;
     /*
-    jsonRead = `[
+    = `[
                     {
                         "caseID": "1",
                         "title": "test article",
@@ -58,8 +63,8 @@ export default class KnowledgeSearch extends LightningElement {
                         "url": "www.555.TBG.com",
                         "content" : "Fifth article here."
                     }
-                ]`;
-    */
+                ]`;*/
+    
 
     //knowledge = require('./knowledgeBase.json');
     //console.log(knowledge);
@@ -104,53 +109,62 @@ export default class KnowledgeSearch extends LightningElement {
         var allText; // var declared in readTextFile scope
         rawFile.overrideMimeType("application/json");
         rawFile.open("GET", file, true);
+        //while (!allText) {
         rawFile.onreadystatechange = function() {
             if (rawFile.readyState === 4 && rawFile.status == "200") {
+                console.log('here', rawFile.responseText)
                 allText = rawFile.responseText;
             }
         }
-        rawFile.send(null);
-        console.log(allText)
-        return allText;
-    }
-
-    readTextFile2(file) {
-        var rawFile = new XMLHttpRequest();
-        var allText; // var declared in readTextFile scope
-        rawFile.overrideMimeType("application/json");
-        rawFile.open("GET", file, false);
-        rawFile.onreadystatechange = function () {
-            if(rawFile.readyState === 4) {
-                if(rawFile.status === 200 || rawFile.status == 0) {
-                    allText = rawFile.responseText;
-                }
-            }
+        //}
+        rawFile.send(null); 
+        if (allText) {
+            console.log('here2',allText)
+            return allText;
         }
-        rawFile.send(null);
-        console.log(allText)
-        return allText; // here you can return the data filled in above
     }
-
-    /*download_KB(filename, text) {
-        var element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', filename);
-
-        element.style.display = 'none';
-        document.body.appendChild(element);
-
-        element.click();
-
-        document.body.removeChild(element);
-    }*/
 
 
     connectedCallback() {
         //window.alert(recordId)
         this.caseId=this.recordId;
+        this.jsonRead = `[
+                    {
+                        "caseID": "1",
+                        "title": "test article",
+                        "url": "www.test.TBG.com",
+                        "content" : "Articles are important for understanding information without having to contact a member of staff. This is a tet article."
+                    },
+                    {
+                        "caseID": "2",
+                        "title": "second test article",
+                        "url": "www.test2.TBG.com",
+                        "content" : "This is also a test article."
+                    },
+                    {
+                        "caseID": "3",
+                        "title": "abcd",
+                        "url": "www.3.TBG.com",
+                        "content" : "This is also a test article - number 3."
+                    },
+                    {
+                        "caseID": "4",
+                        "title": "fourth",
+                        "url": "www.number4.TBG.com",
+                        "content" : "444 - This is also a test article."
+                    },
+                    {
+                        "caseID": "5",
+                        "title": "numero five",
+                        "url": "www.555.TBG.com",
+                        "content" : "Fifth article here."
+                    }
+                ]`;
     }
 
+
     changeHandler(event) {
+
         this.search = event.target.value;
         console.log(this.search);
 
@@ -203,6 +217,7 @@ export default class KnowledgeSearch extends LightningElement {
         var search_data;
         this.readTextFile("./knowledgeBase.json", function(text) {
             //console.log(text);
+            console.log(text)
             search_data = JSON.parse(text);
             
             //this.articles = search_data;
@@ -217,17 +232,34 @@ export default class KnowledgeSearch extends LightningElement {
     //async 
     getRelevantArticles() {
         
+        /**/
+
+        //this.articles = this.readTextFile3('./knowledgeBase.json');
+        //console.log('articles',this.articles);
+
+        //console.log(this.jsonRead)
+
+
+        /*
         this.articles = this.readTextFile('./knowledgeBase.json', function(text) {
             //this.articles = JSON.parse(text); //this.articles not in scope here
+            console.log('text',text)
             var search_data = JSON.parse(text);
             console.log(search_data);
             return search_data
             //console.log(this.articles);
-        });
+        });*/
+
+        //this.articles = ()
+
         // search_data not in scope here
 
+
+
+        this.articles = JSON.parse(this.jsonRead)
+
         //this.articles = 
-        console.log(this.articles);
+        //console.log('articles',this.articles);
 
         //var data = this.readFile('./knowledgeBase.json')
         //console.log(data);
@@ -262,6 +294,23 @@ export default class KnowledgeSearch extends LightningElement {
         }
     }
 
+
+
+    handleRowSelection = event => {
+        console.log('handling')
+        var selectedRows=event.detail.selectedRows;
+        this.recordSelected=false;
+        if(selectedRows.length>0)
+        {  
+            this.recordSelected=true;
+        }
+        console.log(selectedRows)
+        this.selectedRow = selectedRows;
+
+    }
+    handleCancel= event => {
+        this.recordSelected=false;
+    }
 }
 
 

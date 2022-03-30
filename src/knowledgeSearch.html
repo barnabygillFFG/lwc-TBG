@@ -25,27 +25,31 @@
                                         <lightning-datatable
                                             key-field="caseID"
                                             data={data}
-                                            columns={columns}>
-                                            <!--onrowselection={handleRowSelection}-->
+                                            columns={columns}
+                                            onrowselection={handleRowSelection}>
                                         </lightning-datatable>
                                     </div>
                                </div>
                             </lightning-layout-item>
                         </lightning-layout>
                     </template>
-                    <template if:true={page} >
+                    <template if:true={recordSelected} >
                         <div class="slds-page-header">
                             <div id="page">
-                            <lightning-layout>
-                                Title: <br>
-                                {title}
-                                URL: {url}
-                                Body: <br>
-                                {body}
-                            </lightning-layout>
+                            <template for:each={selectedRow} for:item="field">
+                                <p key={field.caseID}>
+                                    <lightning-layout>
+                                        Title: {field.title}<br>
+                                        URL: {field.url}
+                                        Body: <br>
+                                        {field.content}
+                                    </lightning-layout>
+                                    <br>
+                                </p>
+                            </template>
                             </div>
                         </div>
-                        </template>
+                    </template>
                     <template if:false={articles}><i>No articles found.</i></template>
                 </div>
                 </lightning-layout-item>
