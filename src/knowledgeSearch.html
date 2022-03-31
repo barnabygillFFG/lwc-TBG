@@ -38,12 +38,14 @@
                             <div id="page">
                             <template for:each={selectedRow} for:item="field">
                                 <p key={field.caseID}>
-                                    <lightning-layout>
+                                        <lightning-layout>
+                                        <!--<h1>Title:</h1> {field.title}<br>
+                                        <h3>URL:</h3> {field.url}-->
                                         Title: {field.title}<br>
                                         URL: {field.url}
-                                        Body: <br>
+                                        <br>
                                         {field.content}
-                                    </lightning-layout>
+                                        </lightning-layout>
                                     <br>
                                 </p>
                             </template>
@@ -53,6 +55,7 @@
                     <template if:false={articles}><i>No articles found.</i></template>
                 </div>
                 </lightning-layout-item>
+
             </lightning-layout>
         </div>
     </div>

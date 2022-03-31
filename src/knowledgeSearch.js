@@ -143,7 +143,7 @@ export default class KnowledgeSearch extends LightningElement {
                     },
                     {
                         "caseID": "3",
-                        "title": "abcd",
+                        "title": "abcd in the title",
                         "url": "www.3.TBG.com",
                         "content" : "This is also a test article - number 3."
                     },
@@ -158,6 +158,18 @@ export default class KnowledgeSearch extends LightningElement {
                         "title": "numero five",
                         "url": "www.555.TBG.com",
                         "content" : "Fifth article here."
+                    },
+                    {
+                        "caseID": "6",
+                        "title": "xxx",
+                        "url": "www.6.TBG.com",
+                        "content" : "abcd in the content"
+                    },
+                    {
+                        "caseID": "7",
+                        "title": "abcdef in the title",
+                        "url": "www.se7en.TBG.com",
+                        "content" : "content"
                     }
                 ]`;
     }
@@ -288,9 +300,25 @@ export default class KnowledgeSearch extends LightningElement {
         if (this.articles) {
             //this.columns = Object.keys(this.articles[0]);
             //console.log(Object.keys(this.articles[0]));
-            var data_filter = this.articles.filter(element => element.title.includes(this.search))
-            console.log(data_filter)
-            return data_filter
+            //var newArray = this.articles.filter(function (el) {
+            //    return el.title.includes(this.search);
+            //    });
+            var data_filter_1 = this.articles.filter( element =>
+                    element.title.includes(this.search)
+                )
+            //console.log(typeof data_filter_1)
+            var data_filter_2 = this.articles.filter( element =>
+                    element.content.includes(this.search) &&
+                    !element.title.includes(this.search)
+                )
+            //var data_filter_2 = this.articles.filter(
+            //    element => element.content.includes(this.search) && 1=1
+            //    )
+            console.log(data_filter_1)
+            console.log(data_filter_2)
+            var filtered_data = data_filter_1.concat(data_filter_2)
+            console.log(filtered_data)
+            return filtered_data
         }
     }
 
