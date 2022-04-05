@@ -3,57 +3,117 @@
         <span class="title">Knowledge Assignment</span><br>
         <div id="container">
             <lightning-layout>
-                <lightning-layout-item padding="around-small" size="12" >
-                <div>
-                    <lightning-input label="Search" value="" onchange={changeHandler}></lightning-input>
-                </div>
+                <lightning-layout-item padding="around-small" size="12">
+                    <div>
+                        <lightning-input label="Search" value="" onchange={changeHandler}></lightning-input>
+                    </div>
                 </lightning-layout-item>
             </lightning-layout>
             <lightning-layout>
                 <lightning-layout-item class="data-list">
-                <div class="data-list">
-                    <template if:true={data} >
-                        <lightning-layout>
-                            <lightning-layout-item>
-                                {data.length} article(s) found
-                            </lightning-layout-item>
-                         </lightning-layout>
-                         <lightning-layout>
-                            <lightning-layout-item >
-                                <div  class="slds-m-around_medium" style="overflow: hidden;height:100%;padding-bottom:40px;">       
-                                    <div  class="slds-m-around_medium" style="overflow: hidden;height:80%;">
-                                        <lightning-datatable
-                                            key-field="caseID"
-                                            data={data}
-                                            columns={columns}
-                                            onrowselection={handleRowSelection}>
-                                        </lightning-datatable>
+                    <div class="data-list">
+                        <template if:true={data}>
+                            <lightning-layout>
+                                <lightning-layout-item>
+                                    {data.length} article(s) found
+                                </lightning-layout-item>
+                            </lightning-layout>
+                            <br>
+
+                            <!--datatable-->
+                            <b>Datatable</b>
+                            <lightning-layout>
+                                <lightning-layout-item>
+                                    <div class="slds-m-around_medium"
+                                        style="overflow: hidden;height:100%;padding-bottom:40px;">
+                                        <div class="slds-m-around_medium" style="overflow: hidden;height:80%;">
+                                            <lightning-datatable key-field="caseID" data={data} columns={columns}
+                                                onrowselection={handleRowSelection}>
+                                            </lightning-datatable>
+                                        </div>
                                     </div>
-                               </div>
-                            </lightning-layout-item>
-                        </lightning-layout>
-                    </template>
-                    <template if:true={recordSelected} >
-                        <div class="slds-page-header">
-                            <div id="page">
-                            <template for:each={selectedRow} for:item="field">
-                                <p key={field.caseID}>
-                                        <lightning-layout>
-                                        <!--<h1>Title:</h1> {field.title}<br>
-                                        <h3>URL:</h3> {field.url}-->
-                                        Title: {field.title}<br>
-                                        URL: {field.url}
-                                        <br>
-                                        {field.content}
-                                        </lightning-layout>
-                                    <br>
-                                </p>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                            <template if:true={recordSelected}>
+                                <div class="slds-page-header">
+                                    <div id="page">
+                                        <template for:each={selectedRow} for:item="field">
+                                            <p key={field.caseID}>
+                                                <lightning-layout>
+                                                    <!--<h1>Title:</h1> {field.title}<br>
+                                            <h3>URL:</h3> {field.url}-->
+                                                    Title: {field.title}
+                                                    <br>
+                                                    URL: {field.url}
+                                                    <br>
+                                                    {field.content}
+                                                </lightning-layout>
+                                                <br>
+                                            </p>
+                                        </template>
+                                    </div>
+                                </div>
                             </template>
+                            <br>
+
+                            <!--accordian-->
+                            <b>Accordian</b>
+                            <lightning-layout>
+                                <lightning-layout-item>
+                                    <lightning-accordion allow-multiple-sections-open>
+                                        <template for:each={data} for:item="page">
+                                            <lightning-accordion-section label={page.title} key={page.caseID}>
+                                                <div key={page.caseID}>{page.content}</div>
+                                            </lightning-accordion-section>
+                                        </template>
+                                    </lightning-accordion>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                            <br>
+
+                            <!--cards-->
+                            <b>Cards</b>
+                            <div class="row">
+                                <div class="column left">
+                                    <lightning-layout>
+                                        <lightning-layout-item>
+                                            <template for:each={data} for:item="page">
+                                                <lightning-card key={page.caseID} class="custom-card">
+                                                    <div slot="title" data-id={page.caseID} onclick={selectArticle}>{page.title}</div>
+                                                    <div slot="footer">
+                                                        <div slot="actions">
+                                                            <template for:each={page.tags} for:item="tag">
+                                                                <lightning-button label={tag} slot="actions" key={tag}></lightning-button>
+                                                            </template>
+                                                            <!--<lightning-button label="Tag1" slot="actions"></lightning-button>
+                                                            <lightning-button label="Tag2" slot="actions"></lightning-button>-->
+                                                        </div>
+                                                    </div>
+                                                </lightning-card>
+                                            </template>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                                <div class="column right">
+                                    <template if:true={articleSelected}>
+                                        <div class="slds-page-header">
+                                            <div id="selected_page">
+                                                <lightning-layout class="knowledge-page">
+                                                    Title: {selectedArticle.title}<br>
+                                                    URL: {selectedArticle.url}<br><br>
+                                                    {selectedArticle.content}<br><br>
+                                                    Tags: {selectedArticle.tags}
+                                                </lightning-layout>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                    <template if:false={articles}><i>No articles found.</i></template>
-                </div>
+                            
+                        </template>
+                        
+                        <template if:false={articles}><i>No articles found.</i></template>
+                    </div>
                 </lightning-layout-item>
 
             </lightning-layout>
