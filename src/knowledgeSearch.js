@@ -26,6 +26,8 @@ export default class KnowledgeSearch extends LightningElement {
     articles;
     @track recordSelected=false;
     @api selectedRow;
+    @track articleSelected=false;
+    @api selectedArticle;
     @track page = {}
     /**/
     //@track knowledeArticles = testKnowledgeBase();
@@ -64,32 +66,6 @@ export default class KnowledgeSearch extends LightningElement {
                         "content" : "Fifth article here."
                     }
                 ]`;*/
-    
-
-    //knowledge = require('./knowledgeBase.json');
-    //console.log(knowledge);
-
-    /*findArticles() {
-        fetch('./knowledgeBase.json')
-        .then(response => {
-            return response.json();
-        })
-        .then(data => console.log(data));
-        return response.json();
-    }
-
-    readFile(file) {
-        var rawFile = new XMLHttpRequest();
-        rawFile.overrideMimeType("application/json");
-        rawFile.open("GET", file, true);
-        rawFile.onreadystatechange = function() {
-            if (rawFile.readyState === 4 && rawFile.status == "200") {
-                windown.alert(rawFile.responseText)
-                return rawFile.responseText;
-            }
-        }
-        //return null;
-    }*/
 
     readTextFile(file, callback) {
         var rawFile = new XMLHttpRequest();
@@ -133,45 +109,54 @@ export default class KnowledgeSearch extends LightningElement {
                         "caseID": "1",
                         "title": "test article",
                         "url": "www.test.TBG.com",
-                        "content" : "Articles are important for understanding information without having to contact a member of staff. This is a tet article."
+                        "content" : "Articles are important for understanding information without having to contact a member of staff. This is a tet article.",
+                        "tags": ["login", "FAQ"]
                     },
                     {
                         "caseID": "2",
                         "title": "second test article",
                         "url": "www.test2.TBG.com",
-                        "content" : "This is also a test article."
+                        "content" : "This is also a test article.",
+                        "tags": ["champion"]
                     },
                     {
                         "caseID": "3",
                         "title": "abcd in the title",
                         "url": "www.3.TBG.com",
-                        "content" : "This is also a test article - number 3."
+                        "content" : "This is also a test article - number 3.",
+                        "tags": ["login", "charity"]
                     },
                     {
                         "caseID": "4",
                         "title": "fourth",
                         "url": "www.number4.TBG.com",
-                        "content" : "444 - This is also a test article."
+                        "content" : "444 - This is also a test article.",
+                        "tags": ["charity"]
                     },
                     {
                         "caseID": "5",
                         "title": "numero five",
                         "url": "www.555.TBG.com",
-                        "content" : "Fifth article here."
+                        "content" : "Fifth article here.",
+                        "tags": ["signup", "charity"]
                     },
                     {
                         "caseID": "6",
                         "title": "xxx",
                         "url": "www.6.TBG.com",
-                        "content" : "abcd in the content"
+                        "content" : "abcd in the content",
+                        "tags": ["matchfund"]
                     },
                     {
                         "caseID": "7",
                         "title": "abcdef in the title",
                         "url": "www.se7en.TBG.com",
-                        "content" : "content"
+                        "content" : "content",
+                        "tags": ["charity"]
                     }
                 ]`;
+        this.search = ""
+        this.getRelevantArticles()
     }
 
 
@@ -181,6 +166,9 @@ export default class KnowledgeSearch extends LightningElement {
         console.log(this.search);
 
         this.data = this.getRelevantArticles();
+        //let values = this.getRelevantArticles();
+        //this.data = Object.entries(values).map(([key, value]) => ({ key, value }))
+        //console.log(this.data)
 
         /*var filename = "./knowledgeBase.json"
         this.articles = (function(filename) {
@@ -296,8 +284,8 @@ export default class KnowledgeSearch extends LightningElement {
             }
         }*/
         
-        
         if (this.articles) {
+        
             //this.columns = Object.keys(this.articles[0]);
             //console.log(Object.keys(this.articles[0]));
             //var newArray = this.articles.filter(function (el) {
@@ -322,6 +310,31 @@ export default class KnowledgeSearch extends LightningElement {
         }
     }
 
+    selectArticle = event => {
+        console.log("hereeeee")
+        //console.log(caseID)
+        let id = event.currentTarget.dataset.id
+        console.log(id)
+        var article = this.getArticleFromID(id)
+        console.log(article)
+        console.log(article.title)
+        console.log(article.tags)
+        if (article) {
+            this.selectedArticle = article;
+            this.articleSelected = true;
+        }
+
+        //var article = event.currentTarget.dataset.id
+        //console.log(article)
+
+        //console.log(event.detail.value)
+    }
+
+    getArticleFromID(caseID) {
+        if (this.articles) {
+            return this.articles.find(x => x.caseID == caseID);
+        }
+    }
 
 
     handleRowSelection = event => {
