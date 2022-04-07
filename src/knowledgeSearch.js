@@ -33,39 +33,6 @@ export default class KnowledgeSearch extends LightningElement {
     //@track knowledeArticles = testKnowledgeBase();
     /**/
     jsonRead;
-    /*
-    = `[
-                    {
-                        "caseID": "1",
-                        "title": "test article",
-                        "url": "www.test.TBG.com",
-                        "content" : "Articles are important for understanding information without having to contact a member of staff. This is a tet article."
-                    },
-                    {
-                        "caseID": "2",
-                        "title": "second test article",
-                        "url": "www.test2.TBG.com",
-                        "content" : "This is also a test article."
-                    },
-                    {
-                        "caseID": "3",
-                        "title": "abcd",
-                        "url": "www.3.TBG.com",
-                        "content" : "This is also a test article - number 3."
-                    },
-                    {
-                        "caseID": "4",
-                        "title": "fourth",
-                        "url": "www.number4.TBG.com",
-                        "content" : "444 - This is also a test article."
-                    },
-                    {
-                        "caseID": "5",
-                        "title": "numero five",
-                        "url": "www.555.TBG.com",
-                        "content" : "Fifth article here."
-                    }
-                ]`;*/
 
     readTextFile(file, callback) {
         var rawFile = new XMLHttpRequest();
@@ -124,7 +91,7 @@ export default class KnowledgeSearch extends LightningElement {
                         "title": "abcd in the title",
                         "url": "www.3.TBG.com",
                         "content" : "This is also a test article - number 3.",
-                        "tags": ["login", "charity"]
+                        "tags": ["login", "charity", "abc"]
                     },
                     {
                         "caseID": "4",
@@ -152,11 +119,20 @@ export default class KnowledgeSearch extends LightningElement {
                         "title": "abcdef in the title",
                         "url": "www.se7en.TBG.com",
                         "content" : "content",
-                        "tags": ["charity"]
+                        "tags": ["charity", "abc"]
                     }
                 ]`;
         this.search = ""
         this.getRelevantArticles()
+    }
+
+    searchByTag(search) {
+        this.search = search;
+        console.log(this.search);
+
+        this.articles = JSON.parse(this.jsonRead)
+
+        this.data = this.getRelevantArticlesByTag();
     }
 
 
@@ -164,6 +140,8 @@ export default class KnowledgeSearch extends LightningElement {
 
         this.search = event.target.value;
         console.log(this.search);
+
+        this.articles = JSON.parse(this.jsonRead)
 
         this.data = this.getRelevantArticles();
         //let values = this.getRelevantArticles();
@@ -256,7 +234,7 @@ export default class KnowledgeSearch extends LightningElement {
 
 
 
-        this.articles = JSON.parse(this.jsonRead)
+        //this.articles = JSON.parse(this.jsonRead)
 
         //this.articles = 
         //console.log('articles',this.articles);
@@ -285,31 +263,50 @@ export default class KnowledgeSearch extends LightningElement {
         }*/
         
         if (this.articles) {
-        
-            //this.columns = Object.keys(this.articles[0]);
-            //console.log(Object.keys(this.articles[0]));
-            //var newArray = this.articles.filter(function (el) {
-            //    return el.title.includes(this.search);
-            //    });
+            
             var data_filter_1 = this.articles.filter( element =>
-                    element.title.includes(this.search)
+                    element.title.toLowerCase().includes(this.search.toLowerCase())
                 )
-            //console.log(typeof data_filter_1)
+
             var data_filter_2 = this.articles.filter( element =>
-                    element.content.includes(this.search) &&
-                    !element.title.includes(this.search)
+                    element.tags.join('|').toLowerCase().includes(this.search.toLowerCase()) &&
+                    !element.title.toLowerCase().includes(this.search.toLowerCase())
                 )
-            //var data_filter_2 = this.articles.filter(
-            //    element => element.content.includes(this.search) && 1=1
+
+            var data_filter_3 = this.articles.filter( element =>
+                    element.content.toLowerCase().includes(this.search.toLowerCase()) &&
+                    !element.tags.join('|').toLowerCase().includes(this.search.toLowerCase()) &&
+                    !element.title.toLowerCase().includes(this.search.toLowerCase())
+                )
+            
+
+            //var filter_articles = this.articles.filter( element =>
+            //        element.title.toLowerCase().includes(this.search.toLowerCase()) ||
+            //        element.tags.join('|').includes(this.search.toLowerCase()) ||
+            //        element.content.toLowerCase().includes(this.search.toLowerCase())
             //    )
-            console.log(data_filter_1)
-            console.log(data_filter_2)
-            var filtered_data = data_filter_1.concat(data_filter_2)
+            
+            var filtered_data = data_filter_1.concat(data_filter_2, data_filter_3)
             console.log(filtered_data)
             return filtered_data
         }
     }
 
+    getRelevantArticlesByTag() {
+
+        //this.articles = JSON.parse(this.jsonRead)
+        
+        if (this.articles) {
+            
+            var filtered_data = this.articles.filter( element =>
+                    element.tags.join('|').toLowerCase().includes(this.search.toLowerCase())
+                )
+            
+            console.log(filtered_data)
+            return filtered_data
+        }
+    }
+ 
     selectArticle = event => {
         console.log("hereeeee")
         //console.log(caseID)
@@ -337,6 +334,7 @@ export default class KnowledgeSearch extends LightningElement {
     }
 
 
+    /**/
     handleRowSelection = event => {
         console.log('handling')
         var selectedRows=event.detail.selectedRows;
@@ -352,6 +350,21 @@ export default class KnowledgeSearch extends LightningElement {
     handleCancel= event => {
         this.recordSelected=false;
     }
+
+
+    cardHover = event => {
+        //console.log(component, event, helper)
+        //console.log(component.find('3'))
+        console.log(event.currentTarget)
+        //var card = com
+    }
+
+    tagBtn(event) {
+        let search = event.currentTarget.label
+        this.searchByTag(search)
+    }
+
+
 }
 
 

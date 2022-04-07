@@ -18,8 +18,8 @@
 
 .article > h2,
 .article > p {
-    margin: .2rem;
-    font-size: 1rem;
+  margin: .2rem;
+  font-size: 1rem;
 }
 
 .lightning-layout {
@@ -39,7 +39,6 @@
   width: 70%;
 }
 
-/* Clear floats after the columns */
 .row:after {
   content: "";
   display: table;
@@ -47,10 +46,18 @@
 }
 
 .custom-card {
-    padding: 10px;
+  padding: 10px;
 }
 
 .knowledge-page {
-    color: black;
+  color: black;
 }
 
+.btn_small {
+  font-size: small;
+  color: red !important;
+}
+
+.hover {
+  background-color: red;
+}
