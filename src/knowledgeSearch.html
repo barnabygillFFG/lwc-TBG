@@ -5,7 +5,7 @@
             <lightning-layout>
                 <lightning-layout-item padding="around-small" size="12">
                     <div>
-                        <lightning-input label="Search" value="" onchange={changeHandler}></lightning-input>
+                        <lightning-input id="search" label="Search" value="" onchange={changeHandler}></lightning-input>
                     </div>
                 </lightning-layout-item>
             </lightning-layout>
@@ -47,6 +47,8 @@
                                                     URL: {field.url}
                                                     <br>
                                                     {field.content}
+                                                    <br>
+                                                    Tags: {field.tags}
                                                 </lightning-layout>
                                                 <br>
                                             </p>
@@ -63,7 +65,11 @@
                                     <lightning-accordion allow-multiple-sections-open>
                                         <template for:each={data} for:item="page">
                                             <lightning-accordion-section label={page.title} key={page.caseID}>
-                                                <div key={page.caseID}>{page.content}</div>
+                                                <div key={page.caseID}>
+                                                    {page.content}
+                                                    <br>
+                                                    Tags: {page.tags}
+                                                </div>
                                             </lightning-accordion-section>
                                         </template>
                                     </lightning-accordion>
@@ -78,17 +84,27 @@
                                     <lightning-layout>
                                         <lightning-layout-item>
                                             <template for:each={data} for:item="page">
-                                                <lightning-card key={page.caseID} class="custom-card">
-                                                    <div slot="title" data-id={page.caseID} onclick={selectArticle}>{page.title}</div>
+                                                <lightning-card key={page.caseID}
+                                                                class="custom-card"> 
+                                                                <!--onmouseover={cardHover}
+                                                                id={page.caseID}>-->
+                                                    <div slot="title" data-id={page.caseID} onclick={selectArticle}>
+                                                        {page.title}
+                                                    </div>
                                                     <div slot="footer">
                                                         <div slot="actions">
                                                             <template for:each={page.tags} for:item="tag">
-                                                                <lightning-button label={tag} slot="actions" key={tag}></lightning-button>
+                                                                <lightning-button
+                                                                    label={tag}
+                                                                    slot="actions"
+                                                                    key={tag}
+                                                                    onclick={tagBtn}>
+                                                                </lightning-button>
+                                                                &nbsp;
                                                             </template>
-                                                            <!--<lightning-button label="Tag1" slot="actions"></lightning-button>
-                                                            <lightning-button label="Tag2" slot="actions"></lightning-button>-->
                                                         </div>
                                                     </div>
+                                                    
                                                 </lightning-card>
                                             </template>
                                         </lightning-layout-item>
@@ -109,9 +125,7 @@
                                     </template>
                                 </div>
                             </div>
-                            
                         </template>
-                        
                         <template if:false={articles}><i>No articles found.</i></template>
                     </div>
                 </lightning-layout-item>
@@ -120,78 +134,6 @@
         </div>
     </div>
 </template>
-
-
-<!--<template>
-    <div class="slds-page-header">
-        <span class="title">Knowledge Assignment</span>
-        <div id="container">
-            <lightning-layout>
-                <lightning-layout-item padding="around-small" size="12" >
-                <div>
-                    <lightning-input label="Search" onchange={changeHandler}></lightning-input>
-                </div>
-                </lightning-layout-item>
-            </lightning-layout>
-            <lightning-layout>
-                <lightning-layout-item class="data-list">
-                <div class="data-list">
-                    <template if:true={error}>{error}</template>
-                    <template if:true={data} >
-                        <lightning-layout>
-                            <lightning-layout-item>
-                                {data.length} article(s) found
-                            </lightning-layout-item>
-                         </lightning-layout>
-                         <lightning-layout>
-                            <lightning-layout-item >
-                                <div  class="slds-m-around_medium" style="overflow: hidden;height:100%;padding-bottom:40px;">       
-                                    <div  class="slds-m-around_medium" style="overflow: hidden;height:80%;">
-                                        <lightning-datatable
-                                                key-field="id"
-                                                data={data}
-                                                columns={columns}
-                                                onrowselection={handleRowSelection}>
-                                        </lightning-datatable>
-                                        </div>
-                                        <template if:true={recordSelected}>
-                                                    <div  class="slds-m-around_medium" style="height:10%;">
-                                                    <lightning-layout multiple-rows class="slds-m-vertical_x-small slds-p-horizontal_small">
-                                                        <lightning-layout-item size="4">
-                                                        </lightning-layout-item>
-                                                        <lightning-layout-item size="4">
-                                                            <div class="slds-align_absolute-center">
-                                                                // Neutral variant (default) 
-                                                                <lightning-button label="Cancel" title="Non-primary action" onclick={handleCancel} class="slds-m-left_x-small"></lightning-button>
-                                            
-                                                                // Brand variant: Identifies the primary action in a group of buttons
-                                                                <lightning-button variant="brand" label="Assign to case" title="Assign to case" onclick={assignFaqToCase} class="slds-m-left_x-small"></lightning-button>
-                                                            </div>
-                                                        </lightning-layout-item>
-                                                        <lightning-layout-item size="4">
-                                                        </lightning-layout-item>
-                                                    </lightning-layout>
-                                                </div>
-                                        </template>
-                               </div>
-                            </lightning-layout-item>
-                           
-                        </lightning-layout>
-                     </template>
-                    <template if:false={articles}><i>No articles found.</i></template>
-                </div>
-                </lightning-layout-item>
-            </lightning-layout>
-        </div>
-    </div>
-</template>-->
-
-
-
-
-
-
-
 
 
 
