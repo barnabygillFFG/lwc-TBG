@@ -12,7 +12,7 @@ const columns = [
     { label: 'caseID', fieldName: 'caseID' },
     { label: 'Title', fieldName: 'title' },
     { label: 'Content', fieldName: 'content' },
-    { label: 'Tags', fieldName: 'tags' },
+    { label: 'Tags', fieldName: '_tags' },
 ];
 
 export default class KnowledgeSearch extends LightningElement {
@@ -243,6 +243,12 @@ export default class KnowledgeSearch extends LightningElement {
             this.articles = this.articles.filter( element =>
                     Array.isArray(element.tags)
                 )
+            
+            this.articles.forEach((e, i, arr) => {
+                console.log(this.articles[i])
+                console.log(typeof(this.articles[i]))
+                this.articles[i]._tags = e.tags.join(', ');
+            });
 
             
             var data_filter_1 = this.articles.filter( element =>
@@ -269,6 +275,7 @@ export default class KnowledgeSearch extends LightningElement {
             //    )
             
             var filtered_data = data_filter_1.concat(data_filter_2, data_filter_3)
+
             console.log(filtered_data)
             return filtered_data
         }
