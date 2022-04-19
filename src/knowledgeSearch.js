@@ -29,9 +29,6 @@ export default class KnowledgeSearch extends LightningElement {
     @track articleSelected=false;
     @api selectedArticle;
     @track page = {}
-    /**/
-    //@track knowledeArticles = testKnowledgeBase();
-    /**/
     jsonRead;
 
     readTextFile(file, callback) {
@@ -46,28 +43,24 @@ export default class KnowledgeSearch extends LightningElement {
         rawFile.send(null);
     }
     
-
     readTextFile3(file) {
         var rawFile = new XMLHttpRequest();
         var allText; // var declared in readTextFile scope
         rawFile.overrideMimeType("application/json");
         rawFile.open("GET", file, true);
-        //while (!allText) {
         rawFile.onreadystatechange = function() {
             if (rawFile.readyState === 4 && rawFile.status == "200") {
                 console.log('here', rawFile.responseText)
                 allText = rawFile.responseText;
             }
         }
-        //}
         rawFile.send(null); 
         if (allText) {
             console.log('here2',allText)
             return allText;
         }
     }
-
-
+    
     connectedCallback() {
         //window.alert(recordId)
         this.caseId=this.recordId;
