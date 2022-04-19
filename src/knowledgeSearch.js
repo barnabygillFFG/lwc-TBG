@@ -11,8 +11,8 @@ import { LightningElement, track, wire, api } from 'lwc';
 const columns = [
     { label: 'caseID', fieldName: 'caseID' },
     { label: 'Title', fieldName: 'title' },
-    { label: 'Content', fieldName: 'content'},
-    { label: 'url', fieldName: 'url', type: 'url' },
+    { label: 'Content', fieldName: 'content' },
+    { label: 'Tags', fieldName: 'tags' },
 ];
 
 export default class KnowledgeSearch extends LightningElement {
@@ -113,6 +113,13 @@ export default class KnowledgeSearch extends LightningElement {
                         "url": "www.se7en.TBG.com",
                         "content" : "content",
                         "tags": ["charity", "abc"]
+                    },
+                    {
+                        "caseID": "8",
+                        "title": "Failing tags",
+                        "url": "www.8.TBG.com",
+                        "content" : "8",
+                        "tags": "876"
                     }
                 ]`;
         this.search = ""
@@ -137,28 +144,8 @@ export default class KnowledgeSearch extends LightningElement {
         this.articles = JSON.parse(this.jsonRead)
 
         this.data = this.getRelevantArticles();
-        //let values = this.getRelevantArticles();
-        //this.data = Object.entries(values).map(([key, value]) => ({ key, value }))
-        //console.log(this.data)
 
-        /*var filename = "./knowledgeBase.json"
-        this.articles = (function(filename) {
-            var search_data;
-            var rawFile = new XMLHttpRequest();
-            rawFile.overrideMimeType("application/json");
-            rawFile.open("GET", filename, true);
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4 && rawFile.status == "200") {
-                    search_data = JSON.parse(rawFile.responseText);
-                }
-            }
-            rawFile.send(null);
-            //var search_data = JSON.parse(text);
-            console.log(search_data);
-            return search_data;
-            //this.articles = JSON.parse(text);
-            //console.log(this.articles);
-        });
+        /*
         this.articles = (this.readTextFile("./knowledgeBase.json", function(text) {
             //console.log(text);
             var search_data = JSON.parse(text);
@@ -199,12 +186,8 @@ export default class KnowledgeSearch extends LightningElement {
         return search_data;
     }
 
-
-    //async 
     getRelevantArticles() {
         
-        /**/
-
         //this.articles = this.readTextFile3('./knowledgeBase.json');
         //console.log('articles',this.articles);
 
@@ -256,12 +239,18 @@ export default class KnowledgeSearch extends LightningElement {
         }*/
         
         if (this.articles) {
+
+            this.articles = this.articles.filter( element =>
+                    Array.isArray(element.tags)
+                )
+
             
             var data_filter_1 = this.articles.filter( element =>
                     element.title.toLowerCase().includes(this.search.toLowerCase())
                 )
 
             var data_filter_2 = this.articles.filter( element =>
+                    //typeof(element.tags)
                     element.tags.join('|').toLowerCase().includes(this.search.toLowerCase()) &&
                     !element.title.toLowerCase().includes(this.search.toLowerCase())
                 )
