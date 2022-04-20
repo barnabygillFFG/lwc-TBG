@@ -286,6 +286,16 @@ export default class KnowledgeSearch extends LightningElement {
         //this.articles = JSON.parse(this.jsonRead)
         
         if (this.articles) {
+
+            this.articles = this.articles.filter( element =>
+                    Array.isArray(element.tags)
+                )
+            
+            this.articles.forEach((e, i, arr) => {
+                console.log(this.articles[i])
+                console.log(typeof(this.articles[i]))
+                this.articles[i]._tags = e.tags.join(', ');
+            });
             
             var filtered_data = this.articles.filter( element =>
                     element.tags.join('|').toLowerCase().includes(this.search.toLowerCase())
